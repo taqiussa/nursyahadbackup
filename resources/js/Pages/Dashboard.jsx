@@ -1,21 +1,15 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import React from 'react'
+import AppLayout from '@/Layouts/AppLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth }) {
+const Dashboard = () => {
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
-        >
-            <Head title="Dashboard" />
-
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
-    );
+        <>
+            <Head title='Dashboard' />
+            <div className='pl-10 pt-10 text-slate-600 text-lg'>Selamat Datang di Sistem Akademik Terpadu SMP Miftahul Huda, Desa Peron Kecamatan Limbangan</div>
+            <div className='pl-10 text-slate-600 text-lg'>Untuk Menggunakan sistem silahkan klik menu di atas bagi yang menggunakan HP. Bagi yang menggunakan laptop atau komputer, menu berada di samping kiri</div>
+        </>
+    )
 }
+Dashboard.layout = page => <AppLayout children={page} title="Dashboard" />
+export default Dashboard
