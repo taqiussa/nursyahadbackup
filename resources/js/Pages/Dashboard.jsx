@@ -6,7 +6,7 @@ const Dashboard = () => {
     return (
         <>
             <Head title='Dashboard' />
-            <div className='pl-10 pt-10 text-slate-600 text-lg'>Selamat Datang di Sistem Akademik Terpadu SMP Miftahul Huda, Desa Peron Kecamatan Limbangan</div>
+            <div className='pl-10 pt-10 text-slate-600 text-lg'>Selamat Datang di Sistem Akademik SD Karakter Nur Syahad</div>
             <div className='pl-10 text-slate-600 text-lg'>Untuk Menggunakan sistem silahkan klik menu di atas bagi yang menggunakan HP. Bagi yang menggunakan laptop atau komputer, menu berada di samping kiri</div>
         </>
     )

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
+            $table->string('nis', 20);
+            $table->date('tanggal');
+            $table->integer('jumlah');
+            $table->string('keterangan', 200)->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('wajib_bayars', function (Blueprint $table) {
             $table->id();
+            $table->string('tahun', 30);
+            $table->string('tingkat', 3);
+            $table->integer('jumlah');
             $table->timestamps();
         });
     }
