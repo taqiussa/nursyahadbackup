@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('siswa_pondoks', function (Blueprint $table) {
+        Schema::create('biodatas', function (Blueprint $table) {
             $table->id();
-            $table->string('nis',30);
+            $table->string('nis',30)->nullable();
+            $table->string('nik')->nullable();
+            $table->string('nisn')->nullable();
+            $table->string('jenis_kelamin',3)->nullable();
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswa_pondoks');
+        Schema::dropIfExists('biodatas');
     }
 };

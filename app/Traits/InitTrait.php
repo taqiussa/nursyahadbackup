@@ -15,6 +15,18 @@ trait InitTrait
         return $tahunAjaran;
     }
 
+    public function data_tahun_baru()
+    {
+        $tahunIni = date('Y');
+        $bulanIni = date('m');
+        if ($bulanIni <= 6) {
+            $tahunAjaran = intval($tahunIni) . ' / ' . (intval($tahunIni) + 1);
+        } else {
+            $tahunAjaran = (intval($tahunIni) + 1) . ' / ' . (intval($tahunIni) + 2);
+        }
+        return $tahunAjaran;
+    }
+    
     public function data_semester()
     {
         $bulanIni = date('m');

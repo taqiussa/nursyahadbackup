@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
+            $table->string('nis', 30);
+            $table->foreignId('kelas_id');
+            $table->string('tahun', 30);
+            $table->string('tingkat',3)->nullable();
             $table->timestamps();
         });
     }
