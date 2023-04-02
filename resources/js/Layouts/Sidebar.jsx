@@ -2,14 +2,7 @@ import React from 'react';
 import SidebarLink from '@/Components/Sia/SidebarLink';
 import { Icon } from '@mdi/react';
 import { mdiAccountCircleOutline } from '@mdi/js';
-import SidebarAdmin from './Partials/SidebarAdmin';
-import SidebarBendahara from './Partials/SidebarBendahara';
-import SidebarKonseling from './Partials/SidebarKonseling';
-import SidebarKurikulum from './Partials/SidebarKurikulum';
 import SidebarGuru from './Partials/SidebarGuru';
-import SidebarTataUsaha from './Partials/SidebarTataUsaha';
-import SidebarKaryawan from './Partials/SidebarKaryawan';
-import SidebarKesiswaan from './Partials/SidebarKesiswaan';
 export default function Sidebar({ open, closeSide, auth }) {
     return (
         <div>

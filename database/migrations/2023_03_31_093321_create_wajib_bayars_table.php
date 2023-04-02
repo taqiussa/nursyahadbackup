@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('tahun', 30);
             $table->string('tingkat', 3);
+            $table->foreignId('kategori_id');
             $table->integer('jumlah');
             $table->timestamps();
         });
