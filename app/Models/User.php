@@ -43,7 +43,7 @@ class User extends Authenticatable
      */
     public function biodata(): BelongsTo
     {
-        return $this->belongsTo(Biodata::class,'nis','nis')->withDefault();
+        return $this->belongsTo(Biodata::class, 'nis', 'nis')->withDefault();
     }
 
     /**
@@ -53,7 +53,16 @@ class User extends Authenticatable
      */
     public function siswa(): BelongsTo
     {
-        return $this->belongsTo(Siswa::class,'nis','nis')->withDefault();
+        return $this->belongsTo(Siswa::class, 'nis', 'nis')->withDefault();
     }
 
+    /**
+     * Get the siswaPondok that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function siswaPondok(): BelongsTo
+    {
+        return $this->belongsTo(SiswaPondok::class, 'nis', 'nis')->withDefault();
+    }
 }

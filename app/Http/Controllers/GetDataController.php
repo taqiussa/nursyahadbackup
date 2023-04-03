@@ -63,4 +63,19 @@ class GetDataController extends Controller
                 ->get()
         ]);
     }
+
+    public function get_user_non_pondok()
+    {
+        return response()->json([
+            'listUser' => User::where('nis', '!=', null)
+                ->with([
+                    'siswa' => fn ($q) => $q->whereTahun(request('tahun')),
+                    'siswa.kelas',
+                ])
+                ->whereHas('siswa', fn ($q) => $q->whereTahun(request('tahun')))
+                ->whereDoesntHave('siswaPondok')
+                ->orderBy('name')
+                ->get()
+        ]);
+    }
 }
