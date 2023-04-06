@@ -12,7 +12,8 @@ import Tanggal from '@/Components/Sia/Tanggal'
 import getUser from '@/Functions/getUser'
 import getUangSaku from '@/Functions/getUangSaku'
 import InputText from '@/Components/Sia/InputText'
-import { hariTanggal, maskRupiah, rupiah } from '@/Functions/functions'
+import { hariTanggal, maskRupiah, penjumlahan, rupiah } from '@/Functions/functions'
+import { toInteger } from 'lodash'
 
 const InputUangSaku = ({ initTahun, initSemester }) => {
 
@@ -34,6 +35,10 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         value: siswa.nis,
         label: `${siswa.name} - Kelas : ${siswa.siswa?.kelas?.nama}`
     }))
+
+    // const totalJumlah = listUangSaku.reduce((acc, curr) => {
+    //     return acc + toInteger(curr.jumlah)
+    // }, 0)
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.value)
@@ -197,7 +202,7 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                         message={errors.keterangan}
                         handleChange={onHandleChange}
                     />
-                    
+
                 </div>
                 <div className="flex justify-end">
                     <PrimaryButton onClick={submit}>
@@ -248,6 +253,14 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                 </td>
                             </tr>
                         ))}
+                        <tr className="bg-slate-400 border-b">
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={2}>
+                                Total Uang Saku
+                            </td>
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={3}>
+                                {rupiah(penjumlahan(listUangSaku, 'jumlah'))}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

@@ -9,7 +9,9 @@ use App\Http\Controllers\TambahSiswaController;
 use App\Http\Controllers\AturNaikKelasController;
 use App\Http\Controllers\AturKelasSiswaController;
 use App\Http\Controllers\AturPindahKelasController;
+use App\Http\Controllers\AturSiswaBoyongController;
 use App\Http\Controllers\AturSiswaPondokController;
+use App\Http\Controllers\DataSiswaBoyongController;
 use App\Http\Controllers\DataSiswaPondokController;
 use App\Http\Controllers\InputUangSakuController;
 
@@ -67,6 +69,13 @@ Route::middleware([
         Route::post('atur-pindah-kelas/simpan', 'simpan')->name('atur-pindah-kelas.simpan');
     });
 
+    // Route Atur Siswa Boyong
+    Route::controller(AturSiswaBoyongController::class)->group(function () {
+        Route::get('atur-siswa-boyong', 'index')->name('atur-siswa-boyong');
+        Route::post('atur-siswa-boyong/simpan', 'simpan')->name('atur-siswa-boyong.simpan');
+        Route::delete('atur-siswa-boyong/{id}', 'hapus')->name('atur-siswa-boyong.hapus');
+    });
+
     // Route Atur Siswa Pondok
     Route::controller(AturSiswaPondokController::class)->group(function () {
         Route::get('atur-siswa-pondok', 'index')->name('atur-siswa-pondok');
@@ -76,6 +85,9 @@ Route::middleware([
 
     // Route Data Siswa
     Route::get('data-siswa', DataSiswaController::class)->name('data-siswa');
+
+    // Route Data Siswa Boyong
+    Route::get('data-siswa-boyong', DataSiswaBoyongController::class)->name('data-siswa-boyong');
 
     // Route Data Siswa Pondok
     Route::get('data-siswa-pondok', DataSiswaPondokController::class)->name('data-siswa-pondok');

@@ -1,3 +1,5 @@
+import { toInteger } from 'lodash'
+
 export function hariTanggal(tanggal) {
     return new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 }
@@ -25,3 +27,12 @@ export function rupiah(angka) {
 
     return formatter.format(angka);
 } 
+
+export function penjumlahan(list, column) {
+
+    const totalJumlah = list.reduce((acc, curr) => {
+        return acc + toInteger(curr[column])
+    }, 0)
+
+    return totalJumlah
+}

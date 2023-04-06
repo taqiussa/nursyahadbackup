@@ -36,4 +36,11 @@ class InputUangSakuController extends Controller
             'keterangan' => request('keterangan')
         ]);
     }
+
+    public function hapus()
+    {
+        UangSaku::destroy(request('id'));
+
+        return to_route('input-uang-saku');
+    }
 }
