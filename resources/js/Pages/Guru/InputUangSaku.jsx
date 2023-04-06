@@ -6,12 +6,13 @@ import Sweet from '@/Components/Sia/Sweet'
 import Hapus from '@/Components/Sia/Hapus'
 import PrimaryButton from '@/Components/Breeze/PrimaryButton'
 import { toast } from 'react-toastify'
-import getUangSaku from '@/Functions/getUangSaku'
 import moment from 'moment/moment'
 import SearchableSelect from '@/Components/Sia/SearchableSelect'
 import Tanggal from '@/Components/Sia/Tanggal'
 import getUser from '@/Functions/getUser'
 import getUangSaku from '@/Functions/getUangSaku'
+import InputText from '@/Components/Sia/InputText'
+import { hariTanggal, maskRupiah, rupiah } from '@/Functions/functions'
 
 const InputUangSaku = ({ initTahun, initSemester }) => {
 
@@ -31,16 +32,21 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
 
     const optionsSiswa = listSiswa.map((siswa) => ({
         value: siswa.nis,
-        label: `${siswa.name} - ${siswa.siswa?.kelas?.nama}`
+        label: `${siswa.name} - Kelas : ${siswa.siswa?.kelas?.nama}`
     }))
 
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.value)
     }
 
+    const handleRupiah = (event) => {
+        const value = event.target.value
+        setData('jumlah', maskRupiah(value))
+    }
+
     async function getDataSiswa() {
         const response = await getUser(data.tahun)
-        setListSiswa(response.listSiswa)
+        setListSiswa(response.listUser)
     }
 
     async function getDataUangSaku() {
@@ -76,7 +82,6 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                 })
 
                                 getDataSiswa()
-                                getDataSkor()
                                 getDataUangSaku()
                             }
                         })
@@ -99,7 +104,6 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                 })
 
                 getDataSiswa()
-                getDataSkor()
                 getDataUangSaku()
             },
             onError: (error) => {
@@ -136,7 +140,7 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
     useEffect(() => {
 
         if (data.nis
-            && data.tanggal
+            && data.tahun
         ) {
 
             trackPromise(
@@ -147,14 +151,14 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         else {
             setListUangSaku([])
         }
-    }, [data.nis, data.tanggal])
+    }, [data.nis, data.tahun])
 
     return (
         <>
-            <Head title='Input Skor' />
+            <Head title='Input Uang Saku' />
             <form onSubmit={submit} className='space-y-5 mt-10 mb-10'>
 
-                <div className="lg:grid lg:grid-cols-3 lg:gap-2 lg:space-y-0 space-y-3">
+                <div className="lg:grid lg:grid-cols-4 lg:gap-2 lg:space-y-0 space-y-3">
 
                     <Tanggal
                         id="tanggal"
@@ -176,16 +180,24 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                         onChange={(e) => setData('nis', e)}
                     />
 
-                    <SearchableSelect
-                        id="skorId"
-                        name="skorId"
-                        label="Skor"
-                        options={optionsSkor}
-                        value={data.skorId}
-                        message={errors.skorId}
-                        onChange={(e) => setData('skorId', e)}
+                    <InputText
+                        id='jumlah'
+                        name='jumlah'
+                        label='jumlah saku'
+                        value={data.jumlah}
+                        message={errors.jumlah}
+                        handleChange={handleRupiah}
                     />
 
+                    <InputText
+                        id='keterangan'
+                        name='keterangan'
+                        label='keterangan'
+                        value={data.keterangan}
+                        message={errors.keterangan}
+                        handleChange={onHandleChange}
+                    />
+                    
                 </div>
                 <div className="flex justify-end">
                     <PrimaryButton onClick={submit}>
@@ -201,13 +213,13 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                 No
                             </th>
                             <th scope='col' className="py-3 px-2 text-left">
+                                Tanggal
+                            </th>
+                            <th scope='col' className="py-3 px-2 text-left">
+                                Jumlah
+                            </th>
+                            <th scope='col' className="py-3 px-2 text-left">
                                 Keterangan
-                            </th>
-                            <th scope='col' className="py-3 px-2 text-left">
-                                Skor
-                            </th>
-                            <th scope='col' className="py-3 px-2 text-left">
-                                Guru
                             </th>
                             <th scope='col' className="py-3 px-2 text-left">
                                 Aksi
@@ -215,24 +227,24 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {listUangSaku && listUangSaku.map((data, index) => (
+                        {listUangSaku && listUangSaku.map((saku, index) => (
                             <tr key={index} className="bg-white border-b hover:bg-slate-300 odd:bg-slate-200">
                                 <td className="py-2 px-2 font-medium text-slate-600 text-center">
                                     {index + 1}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
-                                    {data.skor.keterangan}
+                                    {hariTanggal(saku.tanggal)}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
-                                    {data.skor.skor}
+                                    {rupiah(saku.jumlah)}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
-                                    {data.user?.name}
+                                    {saku.keterangan}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600 inline-flex space-x-3">
-                                    {auth.user.id == data.user_id && <Hapus
-                                        onClick={() => handleDelete(data.id)}
-                                    />}
+                                    <Hapus
+                                        onClick={() => handleDelete(saku.id)}
+                                    />
                                 </td>
                             </tr>
                         ))}

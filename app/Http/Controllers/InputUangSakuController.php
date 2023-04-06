@@ -11,7 +11,7 @@ class InputUangSakuController extends Controller
 
     public function index()
     {
-        return inertia('Guru/InputUangSaku',[
+        return inertia('Guru/InputUangSaku', [
             'initTahun' => $this->data_tahun(),
             'initSemester' => $this->data_semester()
         ]);
@@ -25,12 +25,14 @@ class InputUangSakuController extends Controller
             'jumlah' => 'required'
         ]);
 
+        $jumlah = ambilAngka(request('jumlah'));
+
         UangSaku::create([
             'tahun' => request('tahun'),
             'semester' => request('semester'),
             'nis' => request('nis'),
             'tanggal' => request('tanggal'),
-            'jumlah' => request('jumlah'),
+            'jumlah' => $jumlah,
             'keterangan' => request('keterangan')
         ]);
     }
