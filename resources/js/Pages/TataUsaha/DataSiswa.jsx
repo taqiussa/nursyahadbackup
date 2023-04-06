@@ -157,7 +157,8 @@ const DataSiswa = ({ initTahun }) => {
                                     <td className="py-2 px-2 font-medium text-slate-600">
                                         <LinkEdit
                                             href={route('tambah-siswa.edit', {
-                                                nis: user.nis
+                                                nis: user.nis,
+                                                id: user.id
                                             })}
                                         />
                                     </td>

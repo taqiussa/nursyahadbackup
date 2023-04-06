@@ -25,7 +25,8 @@ class AturSiswaPondokController extends Controller
 
         foreach ($inputs as $input) {
             SiswaPondok::create([
-                'nis' => $input
+                'nis' => $input,
+                'tahun' => request('tahun')
             ]);
         }
         return to_route('atur-siswa-pondok');

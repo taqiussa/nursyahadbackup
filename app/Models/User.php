@@ -8,6 +8,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -39,11 +40,11 @@ class User extends Authenticatable
     /**
      * Get the biodata that owns the User
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function biodata(): BelongsTo
+    public function biodata(): HasOne
     {
-        return $this->belongsTo(Biodata::class, 'nis', 'nis')->withDefault();
+        return $this->hasOne(Biodata::class)->withDefault();
     }
 
     /**

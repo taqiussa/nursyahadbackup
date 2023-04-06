@@ -8,6 +8,7 @@ import getUser from '@/Functions/getUser';
 import { trackPromise } from 'react-promise-tracker';
 import LinkEdit from '@/Components/Sia/LinkEdit';
 import { tanggal } from '@/Functions/functions';
+import getUserPondok from '@/Functions/getUserPondok';
 
 const DataSiswaPondok = ({ initTahun }) => {
     const { data, setData, errors } = useForm({
@@ -18,7 +19,7 @@ const DataSiswaPondok = ({ initTahun }) => {
     const [listUser, setListUser] = useState([])
 
     async function getDataUser() {
-        const response = await getUser(data.tahun)
+        const response = await getUserPondok(data.tahun)
         setListUser(response.listUser)
     }
 

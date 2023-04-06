@@ -67,15 +67,10 @@ class TambahSiswaController extends Controller
         ]);
 
         $user = User::find(request('id'));
-        $biodata = Biodata::whereNis($user->nis)->first();
-        
-        $user->update([
-            'name' => request('name'),
-            'nis' => request('nis'),
-        ]);
+        // $biodata = Biodata::whereNis($user->nis)->first();
 
-
-        $biodata->update(
+        $user->biodata()->updateOrCreate(
+            [],
             [
                 'nis' => request('nis'),
                 'nisn' => request('nisn'),
@@ -83,12 +78,16 @@ class TambahSiswaController extends Controller
                 'tempat_lahir' => request('tempatLahir'),
                 'tanggal_lahir' => request('tanggalLahir'),
                 'nik' => request('nik'),
-                'asal_sekolah' => request('asalSekolah'),
                 'nama_ayah' => request('namaAyah'),
                 'nama_ibu' => request('namaIbu'),
                 'alamat' => request('alamat'),
             ]
         );
+
+        $user->update([
+            'name' => request('name'),
+            'nis' => request('nis'),
+        ]);
 
         return to_route('data-siswa');
     }

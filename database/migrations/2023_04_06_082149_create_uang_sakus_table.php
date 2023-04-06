@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('uang_sakus', function (Blueprint $table) {
             $table->id();
+            $table->string('nis', 35);
+            $table->string('tahun', 30);
+            $table->date('tanggal');
+            $table->integer('jumlah');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

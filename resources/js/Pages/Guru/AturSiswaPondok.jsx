@@ -76,11 +76,14 @@ const DataSiswa = ({ initTahun }) => {
                     arrayInput: []
                 })
 
+                trackPromise(
+                    getDataUser()
+                )
+
                 checkboxRefs.current.forEach((check) => {
                     check.current.checked = false
                 })
 
-                getDataUser()
 
             },
             onError: (error) => {
@@ -114,7 +117,7 @@ const DataSiswa = ({ initTahun }) => {
 
     return (
         <>
-            <Head title='Data Siswa' />
+            <Head title='Atur Siswa Pondok' />
             <div className="lg:grid lg:grid-cols-4 lg:gap-2 lg:space-y-0 gap-2 pb-7">
 
                 <Tahun
