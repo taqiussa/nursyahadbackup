@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Siswa;
+use App\Models\UangSaku;
 
 class GetDataController extends Controller
 {
@@ -46,6 +47,19 @@ class GetDataController extends Controller
                 ->get()
                 ->sortBy('user.name')
                 ->values()
+        ]);
+    }
+
+    public function get_uang_saku()
+    {
+        return response()->json([
+            'listUangSaku' => UangSaku::whereTahun(request('tahun'))
+                ->whereNis(request('nis'))
+                ->with([
+                    'user' => fn ($q) => $q->select('nis', 'name')
+                ])
+                ->orderByDesc('tanggal')
+                ->get()
         ]);
     }
 
