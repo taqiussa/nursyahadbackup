@@ -33,7 +33,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware([
     'auth',
-    'role:Admin|Bendahara|Guru|Karyawan|Kepala Sekolah|Kesiswaan|Kurikulum'
+    'role:Admin|Bendahara|Guru|Karyawan|Kepala Sekolah|Kesiswaan|Kurikulum|Tata Usaha'
 ])->group(function () {
 
     // Route Get Data
@@ -43,6 +43,7 @@ Route::middleware([
         Route::post('get-siswa-naik-kelas', 'get_siswa_naik_kelas')->name('get-siswa-naik-kelas');
         Route::post('get-user', 'get_user')->name('get-user');
         Route::post('get-user-non-pondok', 'get_user_non_pondok')->name('get-user-non-pondok');
+        Route::post('get-user-pondok', 'get_user_pondok')->name('get-user-pondok');
     });
 
     // Route Atur Kelas Siswa

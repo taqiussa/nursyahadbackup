@@ -13,6 +13,7 @@ export default function SidebarGuru({ closeSide }) {
                 <SidebarLink closeSide={closeSide} href={route('atur-pindah-kelas')} active={route().current('atur-pindah-kelas')} label='atur pindah kelas' />
                 <SidebarLink closeSide={closeSide} href={route('atur-siswa-pondok')} active={route().current('atur-siswa-pondok')} label='atur siswa pondok' />
                 <SidebarLink closeSide={closeSide} href={route('data-siswa')} active={route().current('data-siswa')} label='data siswa' />
+                <SidebarLink closeSide={closeSide} href={route('data-siswa-pondok')} active={route().current('data-siswa-pondok')} label='data siswa pondok' />
                 <SidebarLink closeSide={closeSide} href={route('tambah-siswa')} active={route().current('tambah-siswa')} label='tambah siswa' />
             </div>
         </div>
