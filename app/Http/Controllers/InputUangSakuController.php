@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UangSaku;
+use App\Models\PemasukanSiswa;
 use App\Traits\InitTrait;
 
 class InputUangSakuController extends Controller
@@ -27,7 +27,7 @@ class InputUangSakuController extends Controller
 
         $jumlah = ambilAngka(request('jumlah'));
 
-        UangSaku::create([
+        PemasukanSiswa::create([
             'tahun' => request('tahun'),
             'semester' => request('semester'),
             'nis' => request('nis'),
@@ -39,7 +39,7 @@ class InputUangSakuController extends Controller
 
     public function hapus()
     {
-        UangSaku::destroy(request('id'));
+        PemasukanSiswa::destroy(request('id'));
 
         return to_route('input-uang-saku');
     }

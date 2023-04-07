@@ -13,6 +13,7 @@ use App\Http\Controllers\AturSiswaBoyongController;
 use App\Http\Controllers\AturSiswaPondokController;
 use App\Http\Controllers\DataSiswaBoyongController;
 use App\Http\Controllers\DataSiswaPondokController;
+use App\Http\Controllers\InputPengeluaranSiswaController;
 use App\Http\Controllers\InputUangSakuController;
 
 /*
@@ -44,6 +45,7 @@ Route::middleware([
         Route::post('get-all-siswa', 'get_all_siswa')->name('get-all-siswa');
         Route::post('get-siswa', 'get_siswa')->name('get-siswa');
         Route::post('get-siswa-naik-kelas', 'get_siswa_naik_kelas')->name('get-siswa-naik-kelas');
+        Route::post('get-pengeluaran-siswa', 'get_pengeluaran_siswa')->name('get-pengeluaran-siswa');
         Route::post('get-uang-saku', 'get_uang_saku')->name('get-uang-saku');
         Route::post('get-user', 'get_user')->name('get-user');
         Route::post('get-user-non-pondok', 'get_user_non_pondok')->name('get-user-non-pondok');
@@ -91,6 +93,13 @@ Route::middleware([
 
     // Route Data Siswa Pondok
     Route::get('data-siswa-pondok', DataSiswaPondokController::class)->name('data-siswa-pondok');
+
+    // Route Input Pengeluaran Siswa
+    Route::controller(InputPengeluaranSiswaController::class)->group(function () {
+        Route::get('input-pengeluaran-siswa', 'index')->name('input-pengeluaran-siswa');
+        Route::post('input-pengeluaran-siswa/simpan', 'simpan')->name('input-pengeluaran-siswa.simpan');
+        Route::delete('input-pengeluaran-siswa/{id}', 'hapus')->name('input-pengeluaran-siswa.hapus');
+    });
 
     // Route Input Uang Saku
     Route::controller(InputUangSakuController::class)->group(function (){

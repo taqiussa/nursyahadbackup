@@ -12,9 +12,11 @@ import Tanggal from '@/Components/Sia/Tanggal'
 import getUser from '@/Functions/getUser'
 import getUangSaku from '@/Functions/getUangSaku'
 import InputText from '@/Components/Sia/InputText'
-import { bulan, hariTanggal, maskRupiah, rupiah } from '@/Functions/functions'
+import { bulan, hariTanggal, maskRupiah, penjumlahan, rupiah } from '@/Functions/functions'
+import getPengeluaranSiswa from '@/Functions/getPengeluaranSiswa'
+import Bulan from '@/Components/Sia/Bulan'
 
-const InputUangSaku = ({ initTahun, initSemester }) => {
+const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
 
     const { auth } = usePage().props
 
@@ -24,11 +26,12 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         tanggal: moment(new Date()).format('YYYY-MM-DD'),
         jumlah: '',
         keterangan: '',
-        nis: ''
+        nis: '',
+        bulan: moment(new Date()).format('MM'),
     })
 
     const [listSiswa, setListSiswa] = useState([])
-    const [listUangSaku, setListUangSaku] = useState([])
+    const [listPengeluaran, setListPengeluaran] = useState([])
 
     const optionsSiswa = listSiswa.map((siswa) => ({
         value: siswa.nis,
@@ -49,15 +52,15 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         setListSiswa(response.listUser)
     }
 
-    async function getDataUangSaku() {
-        const response = await getUangSaku(data.tahun, data.nis)
-        setListUangSaku(response.listUangSaku)
+    async function getDataPengeluaran() {
+        const response = await getPengeluaranSiswa(data.tahun, data.tanggal, data.nis)
+        setListPengeluaran(response.listPengeluaran)
     }
 
     const handleDelete = (id) => {
         Sweet.fire({
             title: 'Anda yakin menghapus?',
-            text: "Hapus Uang Saku Siswa!",
+            text: "Hapus Pengeluaran Siswa!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Ya, Hapus!',
@@ -65,13 +68,13 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         })
             .then((result) => {
                 if (result.isConfirmed) {
-                    router.delete(route('input-uang-saku.hapus',
+                    router.delete(route('input-pengeluaran-siswa.hapus',
                         {
                             id: id
                         }),
                         {
                             onSuccess: (page) => {
-                                toast.success('Berhasil Hapus Uang Saku Siswa')
+                                toast.success('Berhasil Hapus Pengeluaran Siswa')
                                 setData({
                                     tahun: data.tahun,
                                     semester: data.semester,
@@ -82,7 +85,7 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                 })
 
                                 getDataSiswa()
-                                getDataUangSaku()
+                                getDataPengeluaran()
                             }
                         })
                 }
@@ -91,9 +94,9 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
 
     const submit = (e) => {
         e.preventDefault()
-        post(route('input-uang-saku.simpan'), {
+        post(route('input-pengeluaran-siswa.simpan'), {
             onSuccess: (page) => {
-                toast.success('Berhasil Simpan Uang Saku Siswa')
+                toast.success('Berhasil Simpan Pengeluaran Siswa')
                 setData({
                     tahun: data.tahun,
                     semester: data.semester,
@@ -104,7 +107,7 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                 })
 
                 getDataSiswa()
-                getDataUangSaku()
+                getDataPengeluaran()
             },
             onError: (error) => {
                 Sweet.fire({
@@ -144,18 +147,18 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         ) {
 
             trackPromise(
-                getDataUangSaku()
+                getDataPengeluaran()
             )
 
         }
         else {
-            setListUangSaku([])
+            setListPengeluaran([])
         }
     }, [data.nis, data.tahun])
 
     return (
         <>
-            <Head title='Input Uang Saku' />
+            <Head title='Input Pengeluaran' />
             <form onSubmit={submit} className='space-y-5 mt-10 mb-10'>
 
                 <div className="lg:grid lg:grid-cols-4 lg:gap-2 lg:space-y-0 space-y-3">
@@ -167,6 +170,14 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                         value={data.tanggal}
                         message={errors.tanggal}
                         isFocused={true}
+                        handleChange={onHandleChange}
+                    />
+
+                    <Bulan
+                        id='bulan'
+                        name='bulan'
+                        value={data.bulan}
+                        message={errors.bulan}
                         handleChange={onHandleChange}
                     />
 
@@ -233,7 +244,7 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {listUangSaku && listUangSaku.map((saku, index) => (
+                        {listPengeluaran && listPengeluaran.map((saku, index) => (
                             <tr key={index} className="bg-white border-b hover:bg-slate-300 odd:bg-slate-200">
                                 <td className="py-2 px-2 font-medium text-slate-600 text-center">
                                     {index + 1}
@@ -260,11 +271,19 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                 </td>
                             </tr>
                         ))}
+                        <tr className="bg-slate-400 border-b">
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={2}>
+                                Total Uang Saku
+                            </td>
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={3}>
+                                {rupiah(penjumlahan(listPengeluaran, 'jumlah'))}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </>
     )
 }
-InputUangSaku.layout = page => <AppLayout children={page} />
-export default InputUangSaku
+InputPengeluaranSiswa.layout = page => <AppLayout children={page} />
+export default InputPengeluaranSiswa

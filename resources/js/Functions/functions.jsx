@@ -8,6 +8,31 @@ export function tanggal(tanggal) {
     return new Date(tanggal).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
+export function bulan(tanggal) {
+    return new Date(tanggal).toLocaleDateString('id-ID', { month: 'long' })
+}
+
+export function arrayBulan() {
+    const months = [
+        { name: 'Januari', value: '01' },
+        { name: 'Februari', value: '02' },
+        { name: 'Maret', value: '03' },
+        { name: 'April', value: '04' },
+        { name: 'Mei', value: '05' },
+        { name: 'Juni', value: '06' },
+        { name: 'Juli', value: '07' },
+        { name: 'Agustus', value: '08' },
+        { name: 'September', value: '09' },
+        { name: 'Oktober', value: '10' },
+        { name: 'November', value: '11' },
+        { name: 'Desember', value: '12' }
+    ];
+
+    return months.map((month) => ({
+        name: month.name,
+        value: month.value
+    }));
+}
 export function maskRupiah(angka) {
     // Remove all non-numeric characters
     const numericValue = angka.replace(/\D/g, '')
@@ -26,7 +51,7 @@ export function rupiah(angka) {
     });
 
     return formatter.format(angka);
-} 
+}
 
 export function penjumlahan(list, column) {
 

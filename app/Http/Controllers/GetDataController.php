@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PemasukanSiswa;
+use App\Models\PengeluaranSiswa;
 use App\Models\User;
 use App\Models\Siswa;
 use App\Models\UangSaku;
@@ -19,6 +21,20 @@ class GetDataController extends Controller
                 ->get()
                 ->sortBy(['user.name'])
                 ->values()
+        ]);
+    }
+
+    public function get_pengeluaran_siswa()
+    {
+        return response()->json([
+            'listPengeluaran' => PengeluaranSiswa::whereTahun(request('tahun'))
+                ->whereMonth('tanggal', request('tanggal'))
+                ->whereNis(request('nis'))
+                ->with([
+                    'user' => fn ($q) => $q->select('id', 'name')
+                ])
+                ->orderByDesc('tanggal')
+                ->get()
         ]);
     }
 
@@ -53,10 +69,10 @@ class GetDataController extends Controller
     public function get_uang_saku()
     {
         return response()->json([
-            'listUangSaku' => UangSaku::whereTahun(request('tahun'))
+            'listUangSaku' => PemasukanSiswa::whereTahun(request('tahun'))
                 ->whereNis(request('nis'))
                 ->with([
-                    'user' => fn ($q) => $q->select('nis', 'name')
+                    'user' => fn ($q) => $q->select('id', 'name')
                 ])
                 ->orderByDesc('tanggal')
                 ->get()
