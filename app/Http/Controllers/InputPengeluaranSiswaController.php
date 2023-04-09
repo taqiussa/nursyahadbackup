@@ -35,7 +35,7 @@ class InputPengeluaranSiswaController extends Controller
             'nis' => request('nis'),
             'tahun' => request('tahun'),
             'semester' => request('semester'),
-            'bulan' => date('Y-'. request('bulan') . '-01'),
+            'bulan' => request('tanggal'),
             'tanggal' => request('tanggal'),
             'jumlah' => $jumlah,
             'keterangan' => request('keterangan'),
