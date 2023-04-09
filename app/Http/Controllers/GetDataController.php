@@ -82,10 +82,12 @@ class GetDataController extends Controller
 
     public function get_uang_saku_per_bulan()
     {
+        $bulan = date('m', strtotime(request('tanggal')));
+
         return response()->json([
             'listUangSaku' => PemasukanSiswa::whereTahun(request('tahun'))
                 ->whereNis(request('nis'))
-                ->whereMonth('bulan', request('bulan'))
+                ->whereMonth('tanggal', $bulan)
                 ->with([
                     'user' => fn ($q) => $q->select('id', 'name')
                 ])
