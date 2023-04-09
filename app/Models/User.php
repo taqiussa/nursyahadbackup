@@ -58,6 +58,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the siswaBoyong that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function siswaBoyong(): BelongsTo
+    {
+        return $this->belongsTo(SiswaBoyong::class, 'nis', 'nis')->withDefault();
+    }
+
+    /**
      * Get the siswaPondok that owns the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

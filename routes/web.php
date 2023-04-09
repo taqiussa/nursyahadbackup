@@ -47,7 +47,9 @@ Route::middleware([
         Route::post('get-siswa-naik-kelas', 'get_siswa_naik_kelas')->name('get-siswa-naik-kelas');
         Route::post('get-pengeluaran-siswa', 'get_pengeluaran_siswa')->name('get-pengeluaran-siswa');
         Route::post('get-uang-saku', 'get_uang_saku')->name('get-uang-saku');
+        Route::post('get-uang-saku-per-bulan', 'get_uang_saku_per_bulan')->name('get-uang-saku-per-bulan');
         Route::post('get-user', 'get_user')->name('get-user');
+        Route::post('get-user-boyong', 'get_user_boyong')->name('get-user-boyong');
         Route::post('get-user-non-pondok', 'get_user_non_pondok')->name('get-user-non-pondok');
         Route::post('get-user-pondok', 'get_user_pondok')->name('get-user-pondok');
     });
@@ -75,7 +77,7 @@ Route::middleware([
     Route::controller(AturSiswaBoyongController::class)->group(function () {
         Route::get('atur-siswa-boyong', 'index')->name('atur-siswa-boyong');
         Route::post('atur-siswa-boyong/simpan', 'simpan')->name('atur-siswa-boyong.simpan');
-        Route::delete('atur-siswa-boyong/{id}', 'hapus')->name('atur-siswa-boyong.hapus');
+        Route::delete('atur-siswa-boyong/hapus', 'hapus')->name('atur-siswa-boyong.hapus');
     });
 
     // Route Atur Siswa Pondok

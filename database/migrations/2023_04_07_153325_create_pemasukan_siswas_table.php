@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nis', 35);
             $table->string('tahun', 30);
             $table->string('semester', 3);
+            $table->date('bulan');
             $table->date('tanggal');
             $table->integer('jumlah');
             $table->string('keterangan')->nullable();

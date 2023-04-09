@@ -10,15 +10,13 @@ import moment from 'moment/moment'
 import SearchableSelect from '@/Components/Sia/SearchableSelect'
 import Tanggal from '@/Components/Sia/Tanggal'
 import getUser from '@/Functions/getUser'
-import getUangSaku from '@/Functions/getUangSaku'
 import InputText from '@/Components/Sia/InputText'
-import { bulan, hariTanggal, maskRupiah, penjumlahan, rupiah } from '@/Functions/functions'
+import { bulan, hariTanggal, maskRupiah, penjumlahan, rupiah, switchBulan } from '@/Functions/functions'
 import getPengeluaranSiswa from '@/Functions/getPengeluaranSiswa'
 import Bulan from '@/Components/Sia/Bulan'
+import getUangSakuPerBulan from '@/Functions/getUangSakuPerBulan'
 
 const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
-
-    const { auth } = usePage().props
 
     const { data, setData, post, errors } = useForm({
         tahun: initTahun,
@@ -32,6 +30,7 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
 
     const [listSiswa, setListSiswa] = useState([])
     const [listPengeluaran, setListPengeluaran] = useState([])
+    const [listUangSaku, setListUangSaku] = useState([])
 
     const optionsSiswa = listSiswa.map((siswa) => ({
         value: siswa.nis,
@@ -53,9 +52,19 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
     }
 
     async function getDataPengeluaran() {
-        const response = await getPengeluaranSiswa(data.tahun, data.tanggal, data.nis)
+        const response = await getPengeluaranSiswa(data.tahun, data.bulan, data.nis)
         setListPengeluaran(response.listPengeluaran)
     }
+
+    async function getDataUangSaku()
+    {
+        const response = await getUangSakuPerBulan(data.tahun, data.bulan, data.nis)
+        setListUangSaku(response.listUangSaku)
+    }
+
+    const jumlahUangSaku = penjumlahan(listUangSaku, 'jumlah')
+    const jumlahPengeluaran = penjumlahan(listPengeluaran, 'jumlah')
+    const totalAkhir = jumlahUangSaku - jumlahPengeluaran
 
     const handleDelete = (id) => {
         Sweet.fire({
@@ -81,11 +90,13 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                                     tanggal: data.tanggal,
                                     jumlah: data.jumlah,
                                     keterangan: data.keterangan,
-                                    nis: data.nis
+                                    nis: data.nis,
+                                    bulan: data.bulan
                                 })
 
                                 getDataSiswa()
                                 getDataPengeluaran()
+                                getDataUangSaku()
                             }
                         })
                 }
@@ -103,11 +114,13 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                     tanggal: data.tanggal,
                     jumlah: data.jumlah,
                     keterangan: data.keterangan,
-                    nis: data.nis
+                    nis: data.nis,
+                    bulan: data.bulan
                 })
 
                 getDataSiswa()
                 getDataPengeluaran()
+                getDataUangSaku()
             },
             onError: (error) => {
                 Sweet.fire({
@@ -143,18 +156,21 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
     useEffect(() => {
 
         if (data.nis
+            && data.bulan
             && data.tahun
         ) {
 
             trackPromise(
-                getDataPengeluaran()
+                getDataPengeluaran(),
+                getDataUangSaku()
             )
 
         }
         else {
             setListPengeluaran([])
+            setListUangSaku([])
         }
-    }, [data.nis, data.tahun])
+    }, [data.nis, data.tahun, data.bulan])
 
     return (
         <>
@@ -239,6 +255,9 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                                 Keterangan
                             </th>
                             <th scope='col' className="py-3 px-2 text-left">
+                                Bendahara
+                            </th>
+                            <th scope='col' className="py-3 px-2 text-left">
                                 Aksi
                             </th>
                         </tr>
@@ -256,13 +275,16 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                                     {saku.tahun}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
-                                    {bulan(saku.tanggal)}
+                                    {bulan(saku.bulan)}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
                                     {rupiah(saku.jumlah)}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
                                     {saku.keterangan}
+                                </td>
+                                <td className="py-2 px-2 font-medium text-slate-600">
+                                    {saku.user?.name}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600 inline-flex space-x-3">
                                     <Hapus
@@ -272,11 +294,27 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                             </tr>
                         ))}
                         <tr className="bg-slate-400 border-b">
-                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={2}>
-                                Total Uang Saku
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
+                                Total Uang Saku Masuk
                             </td>
-                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={3}>
-                                {rupiah(penjumlahan(listPengeluaran, 'jumlah'))}
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
+                                {rupiah(jumlahUangSaku)}
+                            </td>
+                        </tr>
+                        <tr className="bg-slate-400 border-b">
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
+                                Total Pengeluaran
+                            </td>
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
+                                {rupiah(jumlahPengeluaran)}
+                            </td>
+                        </tr>
+                        <tr className="bg-slate-400 border-b">
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
+                                Total Akhir Bulan {switchBulan(data.bulan)}
+                            </td>
+                            <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
+                                {rupiah(totalAkhir)}
                             </td>
                         </tr>
                     </tbody>

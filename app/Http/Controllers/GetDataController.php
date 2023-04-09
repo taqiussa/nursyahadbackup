@@ -6,7 +6,6 @@ use App\Models\PemasukanSiswa;
 use App\Models\PengeluaranSiswa;
 use App\Models\User;
 use App\Models\Siswa;
-use App\Models\UangSaku;
 
 class GetDataController extends Controller
 {
@@ -28,7 +27,7 @@ class GetDataController extends Controller
     {
         return response()->json([
             'listPengeluaran' => PengeluaranSiswa::whereTahun(request('tahun'))
-                ->whereMonth('tanggal', request('tanggal'))
+                ->whereMonth('bulan', request('bulan'))
                 ->whereNis(request('nis'))
                 ->with([
                     'user' => fn ($q) => $q->select('id', 'name')
@@ -79,6 +78,20 @@ class GetDataController extends Controller
         ]);
     }
 
+    public function get_uang_saku_per_bulan()
+    {
+        return response()->json([
+            'listUangSaku' => PemasukanSiswa::whereTahun(request('tahun'))
+                ->whereNis(request('nis'))
+                ->whereMonth('bulan', request('bulan'))
+                ->with([
+                    'user' => fn ($q) => $q->select('id', 'name')
+                ])
+                ->orderByDesc('tanggal')
+                ->get()
+        ]);
+    }
+
     public function get_user()
     {
         return response()->json([
@@ -94,6 +107,20 @@ class GetDataController extends Controller
         ]);
     }
 
+    public function get_user_boyong()
+    {
+        return response()->json([
+            'listUser' => User::where('nis', '!=', null)
+                ->with([
+                    'biodata',
+                    'siswaBoyong.kelas'
+                ])
+                ->whereHas('siswaBoyong')
+                ->orderBy('name')
+                ->get()
+        ]);
+    }
+    
     public function get_user_pondok()
     {
         return response()->json([

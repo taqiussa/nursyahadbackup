@@ -13,6 +13,7 @@ import getUser from '@/Functions/getUser'
 import getUangSaku from '@/Functions/getUangSaku'
 import InputText from '@/Components/Sia/InputText'
 import { bulan, hariTanggal, maskRupiah, rupiah } from '@/Functions/functions'
+import Bulan from '@/Components/Sia/Bulan'
 
 const InputUangSaku = ({ initTahun, initSemester }) => {
 
@@ -24,7 +25,8 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         tanggal: moment(new Date()).format('YYYY-MM-DD'),
         jumlah: '',
         keterangan: '',
-        nis: ''
+        nis: '',
+        bulan: moment(new Date()).format('MM')
     })
 
     const [listSiswa, setListSiswa] = useState([])
@@ -78,7 +80,8 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                     tanggal: data.tanggal,
                                     jumlah: data.jumlah,
                                     keterangan: data.keterangan,
-                                    nis: data.nis
+                                    nis: data.nis,
+                                    bulan: data.bulan
                                 })
 
                                 getDataSiswa()
@@ -100,7 +103,8 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                     tanggal: data.tanggal,
                     jumlah: data.jumlah,
                     keterangan: data.keterangan,
-                    nis: data.nis
+                    nis: data.nis,
+                    bulan: data.bulan
                 })
 
                 getDataSiswa()
@@ -139,7 +143,8 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
 
     useEffect(() => {
 
-        if (data.nis
+        if (data.nis 
+            && data.bulan
             && data.tahun
         ) {
 
@@ -151,7 +156,7 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
         else {
             setListUangSaku([])
         }
-    }, [data.nis, data.tahun])
+    }, [data.nis, data.tahun, data.bulan])
 
     return (
         <>
@@ -167,6 +172,14 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                         value={data.tanggal}
                         message={errors.tanggal}
                         isFocused={true}
+                        handleChange={onHandleChange}
+                    />
+
+                    <Bulan
+                        id='bulan'
+                        name='bulan'
+                        value={data.bulan}
+                        message={errors.bulan}
                         handleChange={onHandleChange}
                     />
 
@@ -228,6 +241,9 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                 Keterangan
                             </th>
                             <th scope='col' className="py-3 px-2 text-left">
+                                Bendahara
+                            </th>
+                            <th scope='col' className="py-3 px-2 text-left">
                                 Aksi
                             </th>
                         </tr>
@@ -252,6 +268,9 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
                                     {saku.keterangan}
+                                </td>
+                                <td className="py-2 px-2 font-medium text-slate-600">
+                                    {saku.user?.name}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600 inline-flex space-x-3">
                                     <Hapus

@@ -11,8 +11,10 @@ export default function SidebarGuru({ closeSide }) {
                 <SidebarLink closeSide={closeSide} href={route('atur-kelas-siswa')} active={route().current('atur-kelas-siswa')} label='atur kelas siswa' />
                 <SidebarLink closeSide={closeSide} href={route('atur-naik-kelas')} active={route().current('atur-naik-kelas')} label='atur naik kelas' />
                 <SidebarLink closeSide={closeSide} href={route('atur-pindah-kelas')} active={route().current('atur-pindah-kelas')} label='atur pindah kelas' />
+                <SidebarLink closeSide={closeSide} href={route('atur-siswa-boyong')} active={route().current('atur-siswa-boyong')} label='atur siswa boyong' />
                 <SidebarLink closeSide={closeSide} href={route('atur-siswa-pondok')} active={route().current('atur-siswa-pondok')} label='atur siswa pondok' />
                 <SidebarLink closeSide={closeSide} href={route('data-siswa')} active={route().current('data-siswa')} label='data siswa' />
+                <SidebarLink closeSide={closeSide} href={route('data-siswa-boyong')} active={route().current('data-siswa-boyong')} label='data siswa boyong' />
                 <SidebarLink closeSide={closeSide} href={route('data-siswa-pondok')} active={route().current('data-siswa-pondok')} label='data siswa pondok' />
                 <SidebarLink closeSide={closeSide} href={route('input-pengeluaran-siswa')} active={route().current('input-pengeluaran-siswa')} label='input pengeluaran siswa' />
                 <SidebarLink closeSide={closeSide} href={route('input-uang-saku')} active={route().current('input-uang-saku')} label='input uang saku' />

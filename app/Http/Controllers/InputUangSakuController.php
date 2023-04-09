@@ -22,18 +22,21 @@ class InputUangSakuController extends Controller
         request()->validate([
             'nis' => 'required',
             'tanggal' => 'required',
-            'jumlah' => 'required'
+            'jumlah' => 'required',
+            'bulan' => 'required'
         ]);
 
         $jumlah = ambilAngka(request('jumlah'));
 
         PemasukanSiswa::create([
+            'nis' => request('nis'),
             'tahun' => request('tahun'),
             'semester' => request('semester'),
-            'nis' => request('nis'),
+            'bulan' => date('Y-' . request('bulan') . '-01'),
             'tanggal' => request('tanggal'),
             'jumlah' => $jumlah,
-            'keterangan' => request('keterangan')
+            'keterangan' => request('keterangan'),
+            'user_id' => auth()->user()->id
         ]);
     }
 

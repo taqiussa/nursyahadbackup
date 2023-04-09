@@ -12,6 +12,10 @@ export function bulan(tanggal) {
     return new Date(tanggal).toLocaleDateString('id-ID', { month: 'long' })
 }
 
+export function switchBulan(bulan) {
+    const bulanNumber = parseInt(bulan, 10) - 1; // subtract 1 since month index starts from 0
+    return new Date(0, bulanNumber).toLocaleDateString('id-ID', { month: 'long' });
+}
 export function arrayBulan() {
     const months = [
         { name: 'Januari', value: '01' },
