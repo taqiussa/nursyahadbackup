@@ -25,9 +25,11 @@ class GetDataController extends Controller
 
     public function get_pengeluaran_siswa()
     {
+        $bulan = date('m', strtotime(request('tanggal')));
+        
         return response()->json([
             'listPengeluaran' => PengeluaranSiswa::whereTahun(request('tahun'))
-                ->whereMonth('bulan', request('bulan'))
+                ->whereMonth('tanggal', $bulan)
                 ->whereNis(request('nis'))
                 ->with([
                     'user' => fn ($q) => $q->select('id', 'name')

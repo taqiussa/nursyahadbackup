@@ -13,7 +13,6 @@ import getUser from '@/Functions/getUser'
 import InputText from '@/Components/Sia/InputText'
 import { bulan, hariTanggal, maskRupiah, penjumlahan, rupiah, switchBulan } from '@/Functions/functions'
 import getPengeluaranSiswa from '@/Functions/getPengeluaranSiswa'
-import Bulan from '@/Components/Sia/Bulan'
 import getUangSakuPerBulan from '@/Functions/getUangSakuPerBulan'
 
 const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
@@ -25,7 +24,6 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
         jumlah: '',
         keterangan: '',
         nis: '',
-        bulan: moment(new Date()).format('MM'),
     })
 
     const [listSiswa, setListSiswa] = useState([])
@@ -52,7 +50,7 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
     }
 
     async function getDataPengeluaran() {
-        const response = await getPengeluaranSiswa(data.tahun, data.bulan, data.nis)
+        const response = await getPengeluaranSiswa(data.tahun, data.tanggal, data.nis)
         setListPengeluaran(response.listPengeluaran)
     }
 
@@ -156,7 +154,7 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
     useEffect(() => {
 
         if (data.nis
-            && data.bulan
+            && data.tanggal
             && data.tahun
         ) {
 
@@ -170,7 +168,7 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
             setListPengeluaran([])
             setListUangSaku([])
         }
-    }, [data.nis, data.tahun, data.bulan])
+    }, [data.nis, data.tahun, data.tanggal])
 
     return (
         <>
@@ -186,14 +184,6 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                         value={data.tanggal}
                         message={errors.tanggal}
                         isFocused={true}
-                        handleChange={onHandleChange}
-                    />
-
-                    <Bulan
-                        id='bulan'
-                        name='bulan'
-                        value={data.bulan}
-                        message={errors.bulan}
                         handleChange={onHandleChange}
                     />
 
@@ -246,9 +236,6 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                                 Tahun
                             </th>
                             <th scope='col' className="py-3 px-2 text-left">
-                                Bulan
-                            </th>
-                            <th scope='col' className="py-3 px-2 text-left">
                                 Jumlah
                             </th>
                             <th scope='col' className="py-3 px-2 text-left">
@@ -273,9 +260,6 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
                                     {saku.tahun}
-                                </td>
-                                <td className="py-2 px-2 font-medium text-slate-600">
-                                    {bulan(saku.bulan)}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
                                     {rupiah(saku.jumlah)}
@@ -311,7 +295,7 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                         </tr>
                         <tr className="bg-slate-400 border-b">
                             <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
-                                Total Akhir Bulan {switchBulan(data.bulan)}
+                                Total Akhir Bulan {bulan(moment(new Date(data.tanggal)))}
                             </td>
                             <td className="py-2 px-2 font-bold text-lg text-slate-600" colSpan={4}>
                                 {rupiah(totalAkhir)}
