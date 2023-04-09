@@ -26,7 +26,6 @@ class InputPengeluaranSiswaController extends Controller
             'tanggal' => 'required',
             'jumlah' => 'required',
             'nis' => 'required',
-            'bulan' => 'required'
         ]);
 
         $jumlah = ambilAngka(request('jumlah'));
