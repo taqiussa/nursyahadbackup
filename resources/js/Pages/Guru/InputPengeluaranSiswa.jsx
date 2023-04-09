@@ -210,7 +210,7 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
                     <InputText
                         id='jumlah'
                         name='jumlah'
-                        label='jumlah saku'
+                        label='jumlah pengeluaran'
                         value={data.jumlah}
                         message={errors.jumlah}
                         handleChange={handleRupiah}

@@ -261,7 +261,7 @@ const InputUangSaku = ({ initTahun, initSemester }) => {
                                     {saku.tahun}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
-                                    {bulan(saku.tanggal)}
+                                    {bulan(saku.bulan)}
                                 </td>
                                 <td className="py-2 px-2 font-medium text-slate-600">
                                     {rupiah(saku.jumlah)}
