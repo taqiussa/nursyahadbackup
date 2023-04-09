@@ -56,7 +56,7 @@ const InputPengeluaranSiswa = ({ initTahun, initSemester }) => {
 
     async function getDataUangSaku()
     {
-        const response = await getUangSakuPerBulan(data.tahun, data.nis)
+        const response = await getUangSakuPerBulan(data.tahun, data.tanggal, data.nis)
         setListUangSaku(response.listUangSaku)
     }
 

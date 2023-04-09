@@ -1,11 +1,12 @@
 import axios from "axios"
 
-const getUangSakuPerBulan = async (tahun, nis) => {
+const getUangSakuPerBulan = async (tahun, tanggal, nis) => {
     try {
         const response = await axios.post(
             route('get-uang-saku-per-bulan',
                 {
                     tahun: tahun,
+                    tanggal: tanggal,
                     nis: nis
                 })
         )
